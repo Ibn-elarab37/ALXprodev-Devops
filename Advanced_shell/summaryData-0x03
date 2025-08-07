@@ -1,0 +1,45 @@
+#!/bin/bash
+
+# Directory containing the JSON files
+DATA_DIR="pokemon_data"
+# Output CSV file
+CSV_FILE="pokemon_report.csv"
+
+# Write CSV header
+echo "Name,Height (m),Weight (kg)" > "$CSV_FILE"
+
+# Initialize totals
+total_height=0
+total_weight=0
+count=0
+
+# Loop through all JSON files
+for file in "$DATA_DIR"/*.json; do
+    name=$(jq -r '.name' "$file")
+    height=$(jq -r '.height' "$file")
+    weight=$(jq -r '.weight' "$file")
+
+    # Convert height and weight from decimeters/hectograms to meters/kilograms
+    height_m=$(echo "scale=2; $height / 10" | bc)
+    weight_kg=$(echo "scale=2; $weight / 10" | bc)
+
+    # Append to CSV
+    echo "$name,$height_m,$weight_kg" >> "$CSV_FILE"
+
+    # Update totals
+    total_height=$(echo "$total_height + $height_m" | bc)
+    total_weight=$(echo "$total_weight + $weight_kg" | bc)
+    count=$((count + 1))
+done
+
+# Calculate averages
+avg_height=$(echo "scale=2; $total_height / $count" | bc)
+avg_weight=$(echo "scale=2; $total_weight / $count" | bc)
+
+# Output results
+echo "CSV Report generated at: $CSV_FILE"
+echo
+cat "$CSV_FILE"
+echo
+echo "Average Height: $avg_height m"
+echo "Average Weight: $avg_weight kg"
