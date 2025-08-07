@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Set endpoint and output files
-API_URL="https://pokeapi.co/api/v2/pokemon/pikachu"
+API_URL="https://pokeapi.co/api/v2/pokemon/"
 OUTPUT_FILE="data.json"
 ERROR_FILE="errors.txt"
 
