@@ -43,3 +43,7 @@ cat "$CSV_FILE"
 echo
 echo "Average Height: $avg_height m"
 echo "Average Weight: $avg_weight kg"
+
+echo "Average Height: $(awk -F',' 'NR>1 {sum+=$2} END {printf "%.2f m\n", sum/(NR-1)}' pokemon_report.csv)"
+echo "Average Weight: $(awk -F',' 'NR>1 {sum+=$3} END {printf "%.2f kg\n", sum/(NR-1)}' pokemon_report.csv)"
+
