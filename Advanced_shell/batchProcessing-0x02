@@ -23,3 +23,35 @@ do
 
     sleep 1
 done
+
+API_URL="https://pokeapi.co/api/v2/pokemon"
+DATA_DIR="pokemon_data"
+LOG_FILE="error.log"
+
+mkdir -p "$DATA_DIR"
+> "$LOG_FILE"  # clear previous errors
+
+POKEMONS=("bulbasaur" "ivysaur" "venusaur" "charmander" "charmeleon")
+
+for name in "${POKEMONS[@]}"; do
+    success=false
+    for attempt in {1..3}; do
+        echo "Fetching $name (Attempt $attempt)..."
+        response=$(curl -s -f "$API_URL/$name")
+
+        if [ $? -eq 0 ]; then
+            echo "$response" > "$DATA_DIR/$name.json"
+            success=true
+            echo "$name fetched successfully."
+            break
+        else
+            echo "Attempt $attempt failed for $name."
+            sleep 1  # optional: wait before retry
+        fi
+    done
+
+    if [ "$success" = false ]; then
+        echo "Failed to fetch $name after 3 attempts." | tee -a "$LOG_FILE"
+    fi
+done
+
