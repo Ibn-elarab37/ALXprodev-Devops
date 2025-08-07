@@ -4,7 +4,7 @@ import json
 import csv
 
 # Directory containing the JSON files
-DATA_DIR = "data.json"
+DATA_DIR = "pokemon_data"
 # Output CSV file
 CSV_FILE = "pokemon_report.csv"
 
