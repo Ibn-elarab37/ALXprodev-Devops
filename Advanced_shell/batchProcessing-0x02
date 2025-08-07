@@ -4,7 +4,7 @@
 mkdir -p pokemon_data
 
 # List of Pokémon names
-pokemon_list=("Bulbasaur" "Ivysaur" "Venusaur" "Charmander" "Charmeleon")
+pokemon_list=("bulbasaur" "ivysaur" "venusaur" "charmander" "charmeleon")
 
 # Loop through each Pokémon
 for name in "${pokemon_list[@]}"
